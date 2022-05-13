@@ -8,15 +8,9 @@ import java.util.List;
 public class Snake extends Sprites{
 
     private List<SnakePart> body;
-    private int size;
-
     private Direction direction;
-
-
-
     public Snake() {
         direction = Direction.RIGHT;
-        size = 2;
         body = new ArrayList<>();
         body.add(new SnakePart(20, 20, direction));
         body.add(new SnakePart(21, 20, direction));
@@ -101,6 +95,7 @@ public class Snake extends Sprites{
         this.direction = direction;
     }
 
+
     public void move() {
         getHead().direction=this.direction;
         for (int i = body.size() - 1; i > 0; i--) {
@@ -115,7 +110,6 @@ public class Snake extends Sprites{
             case LEFT -> getHead().x--;
             case RIGHT -> getHead().x++;
         }
-
     }
 
     public boolean collisionCheck() {

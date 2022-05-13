@@ -16,7 +16,7 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         setPreferredSize(new Dimension(Board.MAX_X, Board.MAX_Y));
         gameOver = false;
-
+        setLayout(null);
         addKeyListener(new GameKeyAdapter());
         setFocusable(true);
 
@@ -30,17 +30,23 @@ public class GamePanel extends JPanel {
             Board.draw(g);
             snake.draw(g);
             food.draw(g);
-        } else GameOverBoard.draw(g);
+        } else {
+            GameOverBoard.draw(g);
+            this.add(GameOverBoard.getPressRLabel());
+            this.add(GameOverBoard.getScoreLabel(snake.getBody().size()));
+        }
 
     }
 
     public void ResetPanel() {
+        removeAll();
         timer.stop();
         gameOver = false;
         food = new Food();
         snake = new Snake();
         timer = new Timer();
         timer.start();
+        Frame.scoreLabel.setText("Your Score: 0");
     }
 
     private class GameKeyAdapter extends KeyAdapter {
@@ -75,26 +81,12 @@ public class GamePanel extends JPanel {
                 if (!gameOver) {
                     snake.move();
                     if (snake.collisionCheck()) gameOver = true;
-
                     for (Point point : food.getApples()) {
                         if (point.x == snake.getHead().x && point.y == snake.getHead().y) {
                             point.setLocation(-1, -1);
                             var tail = snake.getTail();
                             snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
-                            /*switch(snake.getDirection()){
-                                case UP:
-                                    snake.setTail(new Point(tail.x, tail.y));
-                                    break;
-                                case DOWN:
-                                    snake.setTail(new Point(tail.x, tail.y));
-                                    break;
-                                case LEFT:
-                                    snake.setTail(new Point(tail.x, tail.y));
-                                    break;
-                                case RIGHT:
-                                    snake.setTail(new Point(tail.x, tail.y));
-                                    break;
-                            }*/
+                            Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
                         }
                     }
                     repaint();

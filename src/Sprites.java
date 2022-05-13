@@ -4,7 +4,13 @@ import java.awt.image.ImageObserver;
 
 public class Sprites {
 
-    public static ImageIcon background = new ImageIcon("Images/Background2.jpg");
+    public static ImageIcon background = new ImageIcon("Images/Background3.png");
+    public static ImageIcon gameOverBackground = new ImageIcon("Images/GameOverBackground.jpg");
+    public static ImageIcon gameOverLabel = new ImageIcon("Images/GameOver.png");
+
+    public static ImageIcon sadSnakeImage = new ImageIcon("Images/SadSnake.png");
+    public static ImageIcon sadSnakeImage2 = new ImageIcon("Images/SadSnake2.png");
+
     public static ImageIcon appleImage = new ImageIcon("Images/apple.png");
     public static ImageIcon headImageUP = new ImageIcon("Images/redHeadUP.png");
     public static ImageIcon headImageDOWN = new ImageIcon("Images/redHeadDOWN.png");
