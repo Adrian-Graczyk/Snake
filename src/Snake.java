@@ -114,7 +114,7 @@ public class Snake extends Sprites{
 
     public boolean collisionCheck() {
         var head = getHead();
-        if(head.x < 0 || head.y < 0 || head.x > Board.FIELD_X || head.y > Board.FIELD_Y){
+        if(head.x < 0 || head.y < 0 || head.x >= Board.FIELD_X || head.y >= Board.FIELD_Y){
             return true;
         }
         for (SnakePart snakePart : getBody()) {

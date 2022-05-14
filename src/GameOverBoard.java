@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
 
 public class GameOverBoard extends Board{
 
@@ -13,7 +12,7 @@ public class GameOverBoard extends Board{
         return pressRLabel;
     }
 
-    public static JLabel getScoreLabel(int score)
+    public static JLabel getFinalScoreLabel(int score)
     {
         JLabel scoreLabel = new JLabel("Your final score: " + score);
         scoreLabel.setFont(new Font("Arial",0,25));

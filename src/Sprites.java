@@ -5,9 +5,13 @@ import java.awt.image.ImageObserver;
 public class Sprites {
 
     public static ImageIcon background = new ImageIcon("Images/Background3.png");
+    public static ImageIcon startBackground = new ImageIcon("Images/StartBackground.jpg");
+    public static ImageIcon logoImage = new ImageIcon("Images/Logo.png");
     public static ImageIcon gameOverBackground = new ImageIcon("Images/GameOverBackground.jpg");
     public static ImageIcon gameOverLabel = new ImageIcon("Images/GameOver.png");
 
+
+    public static ImageIcon startSnakeImage = new ImageIcon("Images/StartSnake.png");
     public static ImageIcon sadSnakeImage = new ImageIcon("Images/SadSnake.png");
     public static ImageIcon sadSnakeImage2 = new ImageIcon("Images/SadSnake2.png");
 
