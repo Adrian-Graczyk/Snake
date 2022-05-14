@@ -20,10 +20,10 @@ public class StartBoard extends Board{
 
     public static JButton getStartButton(){
         JButton changePlayerButton = new JButton();
-        changePlayerButton.setBounds(300,850,400,50);
+        changePlayerButton.setBounds(300,880,400,50);
         changePlayerButton.setText("Press to start");
         changePlayerButton.setVisible(false);
-        changePlayerButton.setBackground(Color.green);
+        changePlayerButton.setBackground(new Color(220,172,114));
         return changePlayerButton;
     }
 
