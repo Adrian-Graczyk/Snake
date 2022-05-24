@@ -4,17 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import static java.lang.Math.*;
 
 public class GamePanel extends JPanel implements ActionListener {
 
     private Snake snake = new Snake();
-    private Food food = new Food();
+    private ComputerSnake computer_snake = new ComputerSnake();
+    private static Food food = new Food();
     private JTextField userNameField;
     private JButton startButton;
     public boolean gameOver;
     public boolean startBoardActive;
     private final int DELAY = 100;
-    private final int FOOD_DELAY = 2000;
+    private final int FOOD_DELAY = 200;
     private Timer timer = new Timer();
     private FoodTimer foodTimer = new FoodTimer();
 
@@ -41,6 +43,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if (!gameOver && !startBoardActive) {
             GameBoard.draw(g);
             snake.draw(g);
+            computer_snake.computer_draw(g);
             food.draw(g);
             //add(Frame.scoreLabel);
         }
@@ -64,6 +67,7 @@ public class GamePanel extends JPanel implements ActionListener {
         gameOver = false;
         food = new Food();
         snake = new Snake();
+        computer_snake = new ComputerSnake();
         timer = new Timer();
         timer.start();
         Frame.scoreLabel.setText("Your Score: 0");
@@ -78,6 +82,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 component = components[i];
                 if (component instanceof JTextField) {
                     System.out.println(((JTextField) component).getText());
+                    System.out.println(Board.FIELD_X - 1);
                     break;
                 }
             }
@@ -119,7 +124,12 @@ public class GamePanel extends JPanel implements ActionListener {
             super(DELAY, e -> {
                 if (!gameOver && !startBoardActive) {
                     snake.move();
+                    computer_snake.computer_move();
                     if (snake.collisionCheck()) {
+                        System.out.println(snake.getBody().size());
+                        gameOver = true;
+                    }
+                    if (computer_snake.collisionCheck()) {
                         System.out.println(snake.getBody().size());
                         gameOver = true;
                     }
@@ -131,6 +141,26 @@ public class GamePanel extends JPanel implements ActionListener {
                             Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
                         }
                     }
+                    for (Point point : food.getApples()) {
+                        var distance = sqrt((pow((point.x-computer_snake.getHead().x),2)+pow((point.y-computer_snake.getHead().y),2)));
+                        double max = 10000;
+                        if ((max + 10) > distance && point.x != -1 && point.y != -1) {
+                            max = distance;
+                            computer_snake.setTarget(point);
+                        }
+                    }
+                    for (Point point : food.getApples()) {
+                        if (point.x == computer_snake.getHead().x && point.y == computer_snake.getHead().y) {
+                            point.setLocation(-1, -1);
+                            var tail = computer_snake.getTail();
+                            computer_snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                            //Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
+                        }
+                    }
+                   /*Point tmp = food.getApples()[];
+                    if (tmp.x != -1 && tmp.y != -1) {
+                        computer_snake.setTarget(tmp);
+                    }*/
                     repaint();
                 }
             });
@@ -143,7 +173,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 if (!gameOver && !startBoardActive) {
                     for (Point point : food.getApples())
                         if (point.x == -1 || point.y == -1) {
-                            point.setLocation((int) (Math.random() * 50 + 1), (int) (Math.random() * 50 + 1));
+                            point.setLocation((int) (Math.random() * 48 + 1), (int) (Math.random() * 48 + 1));
                             break;
                         }
                 }

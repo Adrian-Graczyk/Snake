@@ -1,54 +1,54 @@
-
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Snake extends Sprites{
+import static java.sql.Types.NULL;
 
-    private List<SnakePart> body;
+public class ComputerSnake extends Sprites{
+
+    private Point target = new Point(0,0);
+    private List<SnakePart> computer_body;
     private Direction direction;
-    public Snake() {
-        direction = Direction.RIGHT;
-        body = new ArrayList<>(); 
-        body.add(new SnakePart(20, 20, direction));
-        body.add(new SnakePart(21, 20, direction));
-    }
 
-    public void draw(Graphics g) {
-         var BodyTMP = getBody();
-        for ( int i = 0; i<BodyTMP.size(); i++) {
-            var snakePart = BodyTMP.get(i);
+    public ComputerSnake() {
+        direction = Direction.UP;
+        computer_body = new ArrayList<>();
+        computer_body.add(new SnakePart(15, 17, direction));
+        computer_body.add(new SnakePart(16, 17, direction));
+    }
+    public void computer_draw(Graphics g) {
+        var computer_bodyTMP = getBody();
+        for ( int i = 0; i<computer_bodyTMP.size(); i++) {
+            var snakePart = computer_bodyTMP.get(i);
             switch (snakePart.direction) {
                 case UP:
-                    if(body.get(i+2).x > snakePart.x)
+                    if(computer_body.get(i+2).x > snakePart.x)
                         g.drawImage(turnUP_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-                    else if(body.get(i+2).x < snakePart.x)
+                    else if(computer_body.get(i+2).x < snakePart.x)
                         g.drawImage(turnUP_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else
                         g.drawImage(bodyImageY.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     break;
                 case DOWN:
-                    if(body.get(i+2).x > snakePart.x)
+                    if(computer_body.get(i+2).x > snakePart.x)
                         g.drawImage(turnDOWN_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-                    else if(body.get(i+2).x < snakePart.x)
+                    else if(computer_body.get(i+2).x < snakePart.x)
                         g.drawImage(turnDOWN_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else
                         g.drawImage(bodyImageY.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     break;
                 case LEFT:
-                    if(body.get(i+2).y > snakePart.y)
+                    if(computer_body.get(i+2).y > snakePart.y)
                         g.drawImage(turnDOWN_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-                    else if(body.get(i+2).y < snakePart.y)
+                    else if(computer_body.get(i+2).y < snakePart.y)
                         g.drawImage(turnUP_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else
                         g.drawImage(bodyImageX.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     break;
                 case RIGHT:
-                    if(body.get(i+2).y > snakePart.y)
+                    if(computer_body.get(i+2).y > snakePart.y)
                         g.drawImage(turnDOWN_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-                    else if(body.get(i+2).y < snakePart.y)
+                    else if(computer_body.get(i+2).y < snakePart.y)
                         g.drawImage(turnUP_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else
                         g.drawImage(bodyImageX.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
@@ -71,20 +71,21 @@ public class Snake extends Sprites{
         }
     }
 
+    public void setTarget(Point point) {this.target = point;}
     public SnakePart getHead() {
-        return body.get(0);
+        return computer_body.get(0);
     }
 
     public List<SnakePart> getBody() {
-        return body.subList(1, body.size()-1);
+        return computer_body.subList(1, computer_body.size()-1);
     }
 
     public SnakePart getTail() {
-        return body.get(body.size()-1);
+        return computer_body.get(computer_body.size()-1);
     }
 
     public void setTail(SnakePart snakePart) {
-        body.add(snakePart);
+        computer_body.add(snakePart);
     }
 
     public Direction getDirection() {
@@ -94,14 +95,72 @@ public class Snake extends Sprites{
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+    public void choose_apple() {
+        var head = getHead();
+        if (head.x > 0 && head.y > 0 && head.x < ((Board.FIELD_X - 1)) && head.y < ((Board.FIELD_Y - 1))){
+            if (target.x > getHead().x && this.getDirection() != Direction.LEFT) {
+                this.setDirection(Direction.RIGHT);
+            }
+            else if (target.x < getHead().x && this.getDirection() != Direction.RIGHT) {
+                this.setDirection(Direction.LEFT);
+            }
+            else if (target.x == getHead().x && target.y > getHead().y &&this.getDirection() != Direction.UP ) {
+                this.setDirection(Direction.DOWN);
+            }
+            else if (target.x == getHead().x && target.y < getHead().y && this.getDirection() != Direction.DOWN) {
+                this.setDirection(Direction.UP);
+            }
+            else if (target.x == NULL && target.y == NULL && this.getDirection() != Direction.RIGHT) {
+                this.setDirection(Direction.DOWN);
+            }
+        }
+        else if (head.x == 0 && head.y == ((Board.FIELD_Y - 1))) {
+            this.setDirection(Direction.RIGHT);
+        }
+        else if (head.x == 0) {
+            if(getDirection() == Direction.DOWN) {
+                this.setDirection(Direction.RIGHT);
+            }
+            else {
+                this.setDirection(Direction.DOWN);
+            }
+        }
+        else if (head.y == Board.FIELD_Y - 1 && head.x == ((Board.FIELD_X - 1))) {
+            this.setDirection(Direction.UP);
+        }
+        else if (head.y == Board.FIELD_Y - 1) {
+            if(getDirection() == Direction.RIGHT) {
+                this.setDirection(Direction.UP);
+            }
+            else {
+                this.setDirection(Direction.RIGHT);
+            }
+        }
+        else if (head.y == 0) {
+            if(getDirection() == Direction.LEFT) {
+                this.setDirection(Direction.DOWN);
+            }
+            else {
+                this.setDirection(Direction.LEFT);
+            }
+        }
+        else if (head.x == (Board.FIELD_X - 1)) {
+            if(getDirection() == Direction.UP) {
+                this.setDirection(Direction.LEFT);
+            }
+            else {
+                this.setDirection(Direction.UP);
+            }
+        }
+    }
+    public void computer_move() {
 
-
-    public void move() {
+        choose_apple();
         getHead().direction=this.direction;
-        for (int i = body.size() - 1; i > 0; i--) {
-            body.get(i).x = body.get(i - 1).x;
-            body.get(i).y = body.get(i - 1).y;
-            body.get(i).direction = body.get(i - 1).direction;
+        for (int i = computer_body.size() - 1; i > 0; i--) {
+            computer_body.get(i).x = computer_body.get(i - 1).x;
+            computer_body.get(i).y = computer_body.get(i - 1).y;
+            computer_body.get(i).direction = computer_body.get(i - 1).direction;
         }
 
         switch (direction) {
@@ -111,16 +170,14 @@ public class Snake extends Sprites{
             case RIGHT -> getHead().x++;
         }
     }
-
     public boolean collisionCheck() {
         var head = getHead();
-        if(head.x < 0 || head.y < 0 || head.x >= Board.FIELD_X || head.y >= Board.FIELD_Y){
-            return true;
-        }
         for (SnakePart snakePart : getBody()) {
             if(snakePart.x == head.x && snakePart.y == head.y)
                 return true;
         }
         return false;
     }
+
+
 }
