@@ -10,7 +10,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private Snake snake = new Snake();
     private ComputerSnake computer_snake = new ComputerSnake();
-    private static Food food = new Food();
+    private Mouse mouse = new Mouse();
+    private Food food = new Food();
+    private Rocks rocks = new Rocks();
     private JTextField userNameField;
     private JButton startButton;
     public boolean gameOver;
@@ -45,6 +47,8 @@ public class GamePanel extends JPanel implements ActionListener {
             snake.draw(g);
             computer_snake.computer_draw(g);
             food.draw(g);
+            rocks.draw(g);
+            mouse.draw(g);
             //add(Frame.scoreLabel);
         }
         if (gameOver) {
@@ -125,7 +129,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 if (!gameOver && !startBoardActive) {
                     snake.move();
                     computer_snake.computer_move();
-                    if (snake.collisionCheck()) {
+                    if (snake.collisionCheck(rocks)) {
                         System.out.println(snake.getBody().size());
                         gameOver = true;
                     }
@@ -161,6 +165,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     if (tmp.x != -1 && tmp.y != -1) {
                         computer_snake.setTarget(tmp);
                     }*/
+                    mouse.move();
                     repaint();
                 }
             });

@@ -23,51 +23,51 @@ public class ComputerSnake extends Sprites{
             switch (snakePart.direction) {
                 case UP:
                     if(computer_body.get(i+2).x > snakePart.x)
-                        g.drawImage(turnUP_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIturnUP_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else if(computer_body.get(i+2).x < snakePart.x)
-                        g.drawImage(turnUP_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIturnUP_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else
-                        g.drawImage(bodyImageY.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIbodyImageY.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     break;
                 case DOWN:
                     if(computer_body.get(i+2).x > snakePart.x)
-                        g.drawImage(turnDOWN_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIturnDOWN_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else if(computer_body.get(i+2).x < snakePart.x)
-                        g.drawImage(turnDOWN_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIturnDOWN_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else
-                        g.drawImage(bodyImageY.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIbodyImageY.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     break;
                 case LEFT:
                     if(computer_body.get(i+2).y > snakePart.y)
-                        g.drawImage(turnDOWN_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIturnDOWN_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else if(computer_body.get(i+2).y < snakePart.y)
-                        g.drawImage(turnUP_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIturnUP_LEFT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else
-                        g.drawImage(bodyImageX.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIbodyImageX.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     break;
                 case RIGHT:
                     if(computer_body.get(i+2).y > snakePart.y)
-                        g.drawImage(turnDOWN_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIturnDOWN_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else if(computer_body.get(i+2).y < snakePart.y)
-                        g.drawImage(turnUP_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIturnUP_RIGHT.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     else
-                        g.drawImage(bodyImageX.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+                        g.drawImage(AIbodyImageX.getImage(),snakePart.x * Board.SIZE, snakePart.y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
                     break;
             }
         }
 
         switch (direction) {
-            case UP -> g.drawImage(headImageUP.getImage(),getHead().x * Board.SIZE, getHead().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-            case DOWN -> g.drawImage(headImageDOWN.getImage(),getHead().x * Board.SIZE, getHead().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-            case LEFT -> g.drawImage(headImageLEFT.getImage(),getHead().x * Board.SIZE, getHead().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-            case RIGHT -> g.drawImage(headImageRIGHT.getImage(),getHead().x * Board.SIZE, getHead().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+            case UP -> g.drawImage(AIheadImageUP.getImage(),getHead().x * Board.SIZE, getHead().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+            case DOWN -> g.drawImage(AIheadImageDOWN.getImage(),getHead().x * Board.SIZE, getHead().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+            case LEFT -> g.drawImage(AIheadImageLEFT.getImage(),getHead().x * Board.SIZE, getHead().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+            case RIGHT -> g.drawImage(AIheadImageRIGHT.getImage(),getHead().x * Board.SIZE, getHead().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
         }
 
         switch (getTail().direction) {
-            case UP -> g.drawImage(tailImageUP.getImage(),getTail().x * Board.SIZE, getTail().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-            case DOWN -> g.drawImage(tailImageDOWN.getImage(),getTail().x * Board.SIZE, getTail().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-            case LEFT -> g.drawImage(tailImageLEFT.getImage(),getTail().x * Board.SIZE, getTail().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
-            case RIGHT -> g.drawImage(tailImageRIGHT.getImage(),getTail().x * Board.SIZE, getTail().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+            case UP -> g.drawImage(AItailImageUP.getImage(),getTail().x * Board.SIZE, getTail().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+            case DOWN -> g.drawImage(AItailImageDOWN.getImage(),getTail().x * Board.SIZE, getTail().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+            case LEFT -> g.drawImage(AItailImageLEFT.getImage(),getTail().x * Board.SIZE, getTail().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
+            case RIGHT -> g.drawImage(AItailImageRIGHT.getImage(),getTail().x * Board.SIZE, getTail().y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
         }
     }
 

@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.ImageObserver;
@@ -12,8 +11,8 @@ public class Snake extends Sprites{
     public Snake() {
         direction = Direction.RIGHT;
         body = new ArrayList<>(); 
-        body.add(new SnakePart(20, 20, direction));
-        body.add(new SnakePart(21, 20, direction));
+        body.add(new SnakePart(5, 5, direction));
+        body.add(new SnakePart(6, 5, direction));
     }
 
     public void draw(Graphics g) {
@@ -112,7 +111,7 @@ public class Snake extends Sprites{
         }
     }
 
-    public boolean collisionCheck() {
+    public boolean collisionCheck(Rocks rocks) {
         var head = getHead();
         if(head.x < 0 || head.y < 0 || head.x >= Board.FIELD_X || head.y >= Board.FIELD_Y){
             return true;
@@ -121,6 +120,13 @@ public class Snake extends Sprites{
             if(snakePart.x == head.x && snakePart.y == head.y)
                 return true;
         }
+        for (int i = 0; i < rocks.getSizeX(); i++) {
+            for (int j = 0; j < rocks.getSizeY(); j++) {
+                if(rocks.getRocks()[i][j].x == head.x && rocks.getRocks()[i][j].y == head.y)
+                    return true;
+            }
+        }
+
         return false;
     }
 }

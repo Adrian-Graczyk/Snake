@@ -2,10 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b2e1f99-a44f-4356-807b-4b8ec37d215d" name="Changes" comment="Start Panel">
+      <change afterPath="$PROJECT_DIR$/Images/Rocks.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueBodyDOWN_LEFT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueBodyDOWN_RIGHT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueBodyUP_LEFT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueBodyUP_RIGHT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueBodyX.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueBodyY.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueHeadDOWN.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueHeadLEFT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueHeadRIGHT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueHeadUP.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueTailDOWN.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueTailLEFT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueTailRIGHT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Images/blueTailUP.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Mouse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Rocks.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ComputerSnake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ComputerSnake.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Snake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Snake.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Sprites.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sprites.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +56,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -154,15 +172,5 @@
     <MESSAGE value="Game Over Panel" />
     <MESSAGE value="Start Panel" />
     <option name="LAST_COMMIT_MESSAGE" value="Start Panel" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.NullPointerException" package="java.lang" />
-          <option name="timeStamp" value="1" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
