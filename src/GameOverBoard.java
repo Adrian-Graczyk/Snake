@@ -16,9 +16,9 @@ public class GameOverBoard extends Board{
     {
         JLabel scoreLabel = new JLabel();
         if(winner == 1)
-            scoreLabel =  new JLabel("Computer win!"+ '\n' + "Your final score: " + score);
+            scoreLabel =  new JLabel("<html> Computer win! <br/> Your final score: " + score +"</html>");
         if(winner == 2)
-            scoreLabel = new JLabel(name + " win!"+ '\n' + "Your final score: " + score);
+            scoreLabel = new JLabel(name + "<html> win! <br/> Your final score: " + score + "</html>");
         scoreLabel.setFont(new Font("Arial",0,25));
         scoreLabel.setBounds(670,280, 400, 50);
         return scoreLabel;

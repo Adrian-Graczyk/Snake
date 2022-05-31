@@ -138,14 +138,15 @@ public class GamePanel extends JPanel implements ActionListener {
             for (SnakePart snakePart : snake.getBody()) {
                 if(snakePart.x == cshead.x && snakePart.y == cshead.y) {
                     gameOverComputer = true;
-                    return gameOverComputer;
+                    return true;
                 }
             }
             var shead = snake.getHead();
             for (SnakePart snakePart : computer_snake.getBody()) {
-                if(snakePart.x == shead.x && snakePart.y == shead.y)
+                if(snakePart.x == shead.x && snakePart.y == shead.y) {
                     gameOver = true;
-                    return gameOver;
+                    return true;
+                }
             }
             return false;
         }
