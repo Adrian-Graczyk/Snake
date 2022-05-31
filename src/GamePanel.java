@@ -185,6 +185,15 @@ public class GamePanel extends JPanel implements ActionListener{
             if (snake.collisionCheck(rocks)) {
                 gameOver = true;
             }
+            if (mouse.getX() == snake.getHead().x && mouse.getY() == snake.getHead().y) {
+                var tail = snake.getTail();
+                snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                snake.setTail(new SnakePart((tail.x + 1), (tail.y + 1), tail.direction));
+                snake.setTail(new SnakePart((tail.x + 2), (tail.y + 2), tail.direction));
+                mouse.setX((int) (Math.random() * 48 + 1));
+                mouse.setY((int) (Math.random() * 48 + 1));
+                Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
+            }
             for (Point point : food.getApples()) {
                 if (point.x == snake.getHead().x && point.y == snake.getHead().y) {
                     point.setLocation(-1, -1);
@@ -204,7 +213,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
             computerSnake.computer_move();
             if (computerSnake.collisionCheck()) {
-                gameOver = true;
+                gameOverComputer = true;
             }
             for (Point point : food.getApples()) {
                 var distance = sqrt((pow((point.x-computerSnake.getHead().x),2)+pow((point.y-computerSnake.getHead().y),2)));
@@ -214,12 +223,19 @@ public class GamePanel extends JPanel implements ActionListener{
                     computerSnake.setTarget(point);
                 }
             }
+            if (mouse.getX() == computerSnake.getHead().x && mouse.getY() == computerSnake.getHead().y) {
+                var tail = computerSnake.getTail();
+                computerSnake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                computerSnake.setTail(new SnakePart((tail.x + 1), (tail.y + 1), tail.direction));
+                computerSnake.setTail(new SnakePart((tail.x + 2), (tail.y + 2), tail.direction));
+                mouse.setX((int) (Math.random() * 48 + 1));
+                mouse.setY((int) (Math.random() * 48 + 1));
+            }
             for (Point point : food.getApples()) {
                 if (point.x == computerSnake.getHead().x && point.y == computerSnake.getHead().y) {
                     point.setLocation(-1, -1);
                     var tail = computerSnake.getTail();
                     computerSnake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
-                    //Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
                 }
             }
         }
@@ -244,9 +260,9 @@ public class GamePanel extends JPanel implements ActionListener{
 
     public class MouseThread extends Thread {
         public void run(){
-            if(mouse.getMovementDelay()>5)
+            if(mouse.getMovementDelay()>10)
             {
-                mouse.move();
+                mouse.move(snake, computerSnake);
                 mouse.setMovementDelay(0);
             }
             else

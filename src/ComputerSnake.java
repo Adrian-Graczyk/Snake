@@ -2,6 +2,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 import static java.sql.Types.NULL;
 
 public class ComputerSnake extends Sprites{
@@ -13,8 +15,8 @@ public class ComputerSnake extends Sprites{
     public ComputerSnake() {
         direction = Direction.UP;
         computer_body = new ArrayList<>();
-        computer_body.add(new SnakePart(15, 17, direction));
-        computer_body.add(new SnakePart(16, 17, direction));
+        computer_body.add(new SnakePart(20, 25, direction));
+        computer_body.add(new SnakePart(20, 26, direction));
     }
     public void computer_draw(Graphics g) {
         var computer_bodyTMP = getBody();
@@ -95,16 +97,47 @@ public class ComputerSnake extends Sprites{
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-    public void choose_apple() {
+    public void choose_direction() {
         var head = getHead();
-        if (head.x > 0 && head.y > 0 && head.x < ((Board.FIELD_X - 1)) && head.y < ((Board.FIELD_Y - 1))){
+        if(head.x > 15 && head.x < 32 && head.y == 19 && this.getDirection() != Direction.RIGHT){
+            this.setDirection(Direction.LEFT);
+            Point tmp = new Point(10,40);
+            this.setTarget(tmp);
+            System.out.println("Tutaj1");
+        }
+        else if(head.x > 15 && head.x < 32 && head.y == 24 && this.getDirection() != Direction.LEFT){
+            this.setDirection(Direction.RIGHT);
+            System.out.println("Tutaj2");
+        }
+        else if(head.y > 19 && head.y < 24 && head.x == 15){
+            int tmp = (int)(Math.random() * 2);
+            if(tmp == 1 && this.getDirection() != Direction.UP) {
+                if(head.x == 15) {
+                    this.setDirection(Direction.UP);
+                }
+            } else {
+                this.setDirection(Direction.DOWN);
+            }
+            System.out.println("Tutaj3 x: " + head.x + " y:" + head.y);
+        }
+        else if(head.y > 19 && head.y < 24 && head.x == 32){
+            int tmp = (int)(Math.random() * 2);
+            if(tmp == 1 && this.getDirection() != Direction.UP) {
+                if(head.x == 32)
+                this.setDirection(Direction.DOWN);
+            } else {
+                this.setDirection(Direction.UP);
+            }
+            System.out.println("Tutaj4 x:" + head.x + " y:" + head.y);
+        }
+        else if(head.x > 0 && head.y > 0 && head.x < ((Board.FIELD_X - 1)) && head.y < ((Board.FIELD_Y - 1))){
             if (target.x > getHead().x && this.getDirection() != Direction.LEFT) {
                 this.setDirection(Direction.RIGHT);
             }
             else if (target.x < getHead().x && this.getDirection() != Direction.RIGHT) {
                 this.setDirection(Direction.LEFT);
             }
-            else if (target.x == getHead().x && target.y > getHead().y &&this.getDirection() != Direction.UP ) {
+            else if (target.x == getHead().x && target.y > getHead().y && this.getDirection() != Direction.UP ) {
                 this.setDirection(Direction.DOWN);
             }
             else if (target.x == getHead().x && target.y < getHead().y && this.getDirection() != Direction.DOWN) {
@@ -155,7 +188,7 @@ public class ComputerSnake extends Sprites{
     }
     public void computer_move() {
 
-        choose_apple();
+        choose_direction();
         getHead().direction=this.direction;
         for (int i = computer_body.size() - 1; i > 0; i--) {
             computer_body.get(i).x = computer_body.get(i - 1).x;
