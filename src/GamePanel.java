@@ -6,10 +6,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import static java.lang.Math.*;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener{
 
     private Snake snake = new Snake();
-    private ComputerSnake computer_snake = new ComputerSnake();
+    private ComputerSnake computerSnake = new ComputerSnake();
     private Mouse mouse = new Mouse();
     private Food food = new Food();
     private Rocks rocks = new Rocks();
@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private final int DELAY = 100;
     private final int FOOD_DELAY = 200;
     private Timer timer = new Timer();
-    private FoodTimer foodTimer = new FoodTimer();
+
 
     public GamePanel() {
         setPreferredSize(new Dimension(Board.MAX_X, Board.MAX_Y));
@@ -39,7 +39,6 @@ public class GamePanel extends JPanel implements ActionListener {
         startButton.setVisible(true);
         this.add(startButton);
 
-        foodTimer.start();
         timer.start();
     }
 
@@ -48,7 +47,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if (!gameOver && !startBoardActive && !gameOverComputer) {
             GameBoard.draw(g);
             snake.draw(g);
-            computer_snake.computer_draw(g);
+            computerSnake.computer_draw(g);
             food.draw(g);
             rocks.draw(g);
             mouse.draw(g);
@@ -78,7 +77,7 @@ public class GamePanel extends JPanel implements ActionListener {
         gameOverComputer = false;
         food = new Food();
         snake = new Snake();
-        computer_snake = new ComputerSnake();
+        computerSnake = new ComputerSnake();
         timer = new Timer();
         timer.start();
         Frame.scoreLabel.setText("Your Score: 0");
@@ -130,88 +129,128 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
     }
-
-    public class Timer extends javax.swing.Timer {
-        public boolean snakesCollisionCheck()
-        {
-            var cshead = computer_snake.getHead();
-            for (SnakePart snakePart : snake.getBody()) {
-                if(snakePart.x == cshead.x && snakePart.y == cshead.y) {
-                    gameOverComputer = true;
-                    return true;
-                }
+    public boolean snakesCollisionCheck()
+    {
+        var cshead = computerSnake.getHead();
+        for (SnakePart snakePart : snake.getBody()) {
+            if(snakePart.x == cshead.x && snakePart.y == cshead.y) {
+                gameOverComputer = true;
+                return true;
             }
-            var shead = snake.getHead();
-            for (SnakePart snakePart : computer_snake.getBody()) {
-                if(snakePart.x == shead.x && snakePart.y == shead.y) {
-                    gameOver = true;
-                    return true;
-                }
-            }
-            return false;
         }
+        var shead = snake.getHead();
+        for (SnakePart snakePart : computerSnake.getBody()) {
+            if(snakePart.x == shead.x && snakePart.y == shead.y) {
+                gameOver = true;
+                return true;
+            }
+        }
+        return false;
+    }
+    public class Timer extends javax.swing.Timer {
         public Timer() {
             super(DELAY, e -> {
                 if (!gameOver && !startBoardActive && !gameOverComputer) {
-                    snake.move();
-                    computer_snake.computer_move();
-                    if (snake.collisionCheck(rocks)) {
+                    SnakeThread snakeThread = new SnakeThread();
+                    ComputerSnakeThread computerSnakeThread = new ComputerSnakeThread();
+                    ApplesThread applesThread = new ApplesThread();
+                    MouseThread mouseThread = new MouseThread();
+
+                    snakeThread.start();
+                    computerSnakeThread.start();
+                    mouseThread.start();
+                    applesThread.start();
+
+
+                    try {
+                        snakeThread.join();
+                        computerSnakeThread.join();
+                        applesThread.join();
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                    if (snakesCollisionCheck()) {
                         System.out.println(snake.getBody().size());
-                        gameOver = true;
                     }
-                    if (computer_snake.collisionCheck()) {
-                        System.out.println(snake.getBody().size());
-                        gameOver = true;
-                    }
-                    if (timer.snakesCollisionCheck()) {
-                        System.out.println(snake.getBody().size());
-                    }
-                    for (Point point : food.getApples()) {
-                        if (point.x == snake.getHead().x && point.y == snake.getHead().y) {
-                            point.setLocation(-1, -1);
-                            var tail = snake.getTail();
-                            snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
-                            Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
-                        }
-                    }
-                    for (Point point : food.getApples()) {
-                        var distance = sqrt((pow((point.x-computer_snake.getHead().x),2)+pow((point.y-computer_snake.getHead().y),2)));
-                        double max = 10000;
-                        if ((max + 10) > distance && point.x != -1 && point.y != -1) {
-                            max = distance;
-                            computer_snake.setTarget(point);
-                        }
-                    }
-                    for (Point point : food.getApples()) {
-                        if (point.x == computer_snake.getHead().x && point.y == computer_snake.getHead().y) {
-                            point.setLocation(-1, -1);
-                            var tail = computer_snake.getTail();
-                            computer_snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
-                            //Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
-                        }
-                    }
-                   /*Point tmp = food.getApples()[];
-                    if (tmp.x != -1 && tmp.y != -1) {
-                        computer_snake.setTarget(tmp);
-                    }*/
-                    //mouse.move();
                     repaint();
                 }
             });
         }
     }
 
-    public class FoodTimer extends javax.swing.Timer {
-        public FoodTimer() {
-            super(FOOD_DELAY, e -> {
-                if (!gameOver && !startBoardActive && !gameOverComputer) {
-                    for (Point point : food.getApples())
-                        if (point.x == -1 || point.y == -1) {
-                            point.setLocation((int) (Math.random() * 48 + 1), (int) (Math.random() * 48 + 1));
-                            break;
-                        }
+    public class SnakeThread extends Thread {
+        public void run() {
+            snake.move();
+            if (snake.collisionCheck(rocks)) {
+                gameOver = true;
+            }
+            for (Point point : food.getApples()) {
+                if (point.x == snake.getHead().x && point.y == snake.getHead().y) {
+                    point.setLocation(-1, -1);
+                    var tail = snake.getTail();
+                    snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                    Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
                 }
-            });
+            }
+        }
+    }
+    public class ComputerSnakeThread extends Thread {
+        public void run() {
+            /*Point tmp = food.getApples()[];
+                    if (tmp.x != -1 && tmp.y != -1) {
+                        computer_snake.setTarget(tmp);
+                    }*/
+
+            computerSnake.computer_move();
+            if (computerSnake.collisionCheck()) {
+                gameOver = true;
+            }
+            for (Point point : food.getApples()) {
+                var distance = sqrt((pow((point.x-computerSnake.getHead().x),2)+pow((point.y-computerSnake.getHead().y),2)));
+                double max = 10000;
+                if ((max + 10) > distance && point.x != -1 && point.y != -1) {
+                    max = distance;
+                    computerSnake.setTarget(point);
+                }
+            }
+            for (Point point : food.getApples()) {
+                if (point.x == computerSnake.getHead().x && point.y == computerSnake.getHead().y) {
+                    point.setLocation(-1, -1);
+                    var tail = computerSnake.getTail();
+                    computerSnake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                    //Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
+                }
+            }
+        }
+    }
+
+    public class ApplesThread extends Thread {
+        public void run(){
+            if(food.getIterationDelay()>10)
+            {
+                for (Point point : food.getApples()) {
+                    if (point.x == -1 || point.y == -1) {
+                        point.setLocation((int) (Math.random() * 48 + 1), (int) (Math.random() * 48 + 1));
+                        break;
+                    }
+                }
+                food.setIterationDelay(0);
+            }
+            else
+                food.setIterationDelay(food.getIterationDelay()+1);
+        }
+    }
+
+    public class MouseThread extends Thread {
+        public void run(){
+            if(mouse.getMovementDelay()>5)
+            {
+                mouse.move();
+                mouse.setMovementDelay(0);
+            }
+            else
+                mouse.setMovementDelay(mouse.getMovementDelay()+1);
         }
     }
 }

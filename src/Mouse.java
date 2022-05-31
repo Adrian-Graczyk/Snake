@@ -11,10 +11,13 @@ public class Mouse extends Sprites{
     private int y;
     private Direction direction;
 
+    private int movementDelay;
+
     public Mouse(){
         x=40;
         y=40;
         direction = Direction.UP;
+        movementDelay=0;
     }
 
     public void draw(Graphics g) {
@@ -61,5 +64,9 @@ public class Mouse extends Sprites{
     public Direction getDirection() {
         return direction;
     }
+
+    public void setMovementDelay(int movementDelay) { this.movementDelay = movementDelay; }
+
+    public int getMovementDelay() {return movementDelay; }
 
 }
