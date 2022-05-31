@@ -16,7 +16,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private JTextField userNameField;
     private JButton startButton;
     public boolean gameOver;
+    public boolean gameOverComputer;
     public boolean startBoardActive;
+    public String name;
     private final int DELAY = 100;
     private final int FOOD_DELAY = 200;
     private Timer timer = new Timer();
@@ -26,6 +28,7 @@ public class GamePanel extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(Board.MAX_X, Board.MAX_Y));
         setBounds(0,0,Board.MAX_X, Board.MAX_Y);
         gameOver = false;
+        gameOverComputer = false;
         startBoardActive=true;
         setLayout(null);
         addKeyListener(new GameKeyAdapter());
@@ -42,7 +45,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     protected void paintComponent(Graphics g) {
-        if (!gameOver && !startBoardActive) {
+        if (!gameOver && !startBoardActive && !gameOverComputer) {
             GameBoard.draw(g);
             snake.draw(g);
             computer_snake.computer_draw(g);
@@ -51,10 +54,13 @@ public class GamePanel extends JPanel implements ActionListener {
             mouse.draw(g);
             //add(Frame.scoreLabel);
         }
-        if (gameOver) {
+        if (gameOver || gameOverComputer) {
             GameOverBoard.draw(g);
             this.add(GameOverBoard.getPressRLabel());
-            this.add(GameOverBoard.getFinalScoreLabel(snake.getBody().size()));
+            if(gameOver)
+                this.add(GameOverBoard.getFinalScoreLabel(snake.getBody().size(), 1, name));
+            if(gameOverComputer)
+                this.add(GameOverBoard.getFinalScoreLabel(snake.getBody().size(), 2, name));
         }
         if (startBoardActive){
             StartBoard.draw(g);
@@ -69,6 +75,7 @@ public class GamePanel extends JPanel implements ActionListener {
         removeAll();
         timer.stop();
         gameOver = false;
+        gameOverComputer = false;
         food = new Food();
         snake = new Snake();
         computer_snake = new ComputerSnake();
@@ -86,12 +93,13 @@ public class GamePanel extends JPanel implements ActionListener {
                 component = components[i];
                 if (component instanceof JTextField) {
                     System.out.println(((JTextField) component).getText());
-                    System.out.println(Board.FIELD_X - 1);
+                    name = ((JTextField) component).getText();
                     break;
                 }
             }
             startBoardActive=false;
             gameOver=false;
+            gameOverComputer = false;
             this.ResetPanel();
         }
     }
@@ -124,9 +132,26 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public class Timer extends javax.swing.Timer {
+        public boolean snakesCollisionCheck()
+        {
+            var cshead = computer_snake.getHead();
+            for (SnakePart snakePart : snake.getBody()) {
+                if(snakePart.x == cshead.x && snakePart.y == cshead.y) {
+                    gameOverComputer = true;
+                    return gameOverComputer;
+                }
+            }
+            var shead = snake.getHead();
+            for (SnakePart snakePart : computer_snake.getBody()) {
+                if(snakePart.x == shead.x && snakePart.y == shead.y)
+                    gameOver = true;
+                    return gameOver;
+            }
+            return false;
+        }
         public Timer() {
             super(DELAY, e -> {
-                if (!gameOver && !startBoardActive) {
+                if (!gameOver && !startBoardActive && !gameOverComputer) {
                     snake.move();
                     computer_snake.computer_move();
                     if (snake.collisionCheck(rocks)) {
@@ -136,6 +161,9 @@ public class GamePanel extends JPanel implements ActionListener {
                     if (computer_snake.collisionCheck()) {
                         System.out.println(snake.getBody().size());
                         gameOver = true;
+                    }
+                    if (timer.snakesCollisionCheck()) {
+                        System.out.println(snake.getBody().size());
                     }
                     for (Point point : food.getApples()) {
                         if (point.x == snake.getHead().x && point.y == snake.getHead().y) {
@@ -165,7 +193,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     if (tmp.x != -1 && tmp.y != -1) {
                         computer_snake.setTarget(tmp);
                     }*/
-                    mouse.move();
+                    //mouse.move();
                     repaint();
                 }
             });
@@ -175,7 +203,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public class FoodTimer extends javax.swing.Timer {
         public FoodTimer() {
             super(FOOD_DELAY, e -> {
-                if (!gameOver && !startBoardActive) {
+                if (!gameOver && !startBoardActive && !gameOverComputer) {
                     for (Point point : food.getApples())
                         if (point.x == -1 || point.y == -1) {
                             point.setLocation((int) (Math.random() * 48 + 1), (int) (Math.random() * 48 + 1));

@@ -17,7 +17,7 @@ public class Sprites {
 
 
     public static ImageIcon appleImage = new ImageIcon("Images/apple.png");
-    public static ImageIcon rocksImage = new ImageIcon("Images/Rocks2.png");
+    public static ImageIcon rocksImage = new ImageIcon("Images/Rocks.png");
 
     public static ImageIcon mouseImageUP = new ImageIcon("Images/mouseUP.png");
     public static ImageIcon mouseImageDOWN = new ImageIcon("Images/mouseDOWN.png");
