@@ -167,6 +167,7 @@ public class GamePanel extends JPanel implements ActionListener{
                         snakeThread.join();
                         computerSnakeThread.join();
                         applesThread.join();
+                        mouseThread.join();
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -207,13 +208,8 @@ public class GamePanel extends JPanel implements ActionListener{
     }
     public class ComputerSnakeThread extends Thread {
         public void run() {
-            /*Point tmp = food.getApples()[];
-                    if (tmp.x != -1 && tmp.y != -1) {
-                        computer_snake.setTarget(tmp);
-                    }*/
-
             computerSnake.computer_move();
-            if (computerSnake.collisionCheck()) {
+            if (computerSnake.collisionCheck(rocks)) {
                 gameOverComputer = true;
             }
             for (Point point : food.getApples()) {
@@ -261,13 +257,13 @@ public class GamePanel extends JPanel implements ActionListener{
 
     public class MouseThread extends Thread {
         public void run(){
-            if(mouse.getMovementDelay()>400)
-            {
+            //if(mouse.getMovementDelay()>2)
+            //{
                 mouse.move(snake, computerSnake);
-                mouse.setMovementDelay(0);
-            }
-            else
-                mouse.setMovementDelay(mouse.getMovementDelay()+80);
+               //mouse.setMovementDelay(0);
+            //}
+            //else
+                //mouse.setMovementDelay(mouse.getMovementDelay()+1);
         }
     }
 }

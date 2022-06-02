@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Snake extends Sprites{
 
-    private List<SnakePart> body;
-    private Direction direction;
+    protected List<SnakePart> body;
+    protected Direction direction;
     public Snake() {
         direction = Direction.RIGHT;
         body = new ArrayList<>(); 

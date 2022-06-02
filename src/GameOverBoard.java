@@ -52,10 +52,10 @@ public class GameOverBoard extends Board{
             catch (IOException exception) {
                 exception.printStackTrace();
             }
-            scoreLabel = new JLabel("<html> Najlepszy osiągnięty wynik: <br/>" + name + " = "+ score + " pkt!" +"</html>");
+            scoreLabel = new JLabel("<html> Best Player <br/>" + name + " = "+ score + " pkt!" +"</html>");
         }
         else {
-            scoreLabel = new JLabel("<html> Najlepszy osiągnięty wynik: <br/>" + bestplayername + " = "+ bestplayerscore +" pkt!" + "</html>");
+            scoreLabel = new JLabel("<html> Best Player <br/>" + bestplayername + " = "+ bestplayerscore +" pkt!" + "</html>");
         }
 
         scoreLabel.setFont(new Font("Arial",0,25));
