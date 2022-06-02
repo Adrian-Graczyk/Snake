@@ -56,6 +56,7 @@ public class GamePanel extends JPanel implements ActionListener{
         if (gameOver || gameOverComputer) {
             GameOverBoard.draw(g);
             this.add(GameOverBoard.getPressRLabel());
+            this.add(GameOverBoard.topScore(snake.getBody().size(), name));
             if(gameOver)
                 this.add(GameOverBoard.getFinalScoreLabel(snake.getBody().size(), 1, name));
             if(gameOverComputer)
@@ -260,13 +261,13 @@ public class GamePanel extends JPanel implements ActionListener{
 
     public class MouseThread extends Thread {
         public void run(){
-            if(mouse.getMovementDelay()>10)
+            if(mouse.getMovementDelay()>400)
             {
                 mouse.move(snake, computerSnake);
                 mouse.setMovementDelay(0);
             }
             else
-                mouse.setMovementDelay(mouse.getMovementDelay()+1);
+                mouse.setMovementDelay(mouse.getMovementDelay()+80);
         }
     }
 }

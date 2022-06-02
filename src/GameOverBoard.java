@@ -1,5 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class GameOverBoard extends Board{
 
@@ -21,6 +25,40 @@ public class GameOverBoard extends Board{
             scoreLabel = new JLabel(name + "<html> win! <br/> Your final score: " + score + "</html>");
         scoreLabel.setFont(new Font("Arial",0,25));
         scoreLabel.setBounds(670,280, 400, 50);
+        return scoreLabel;
+    }
+    public static JLabel topScore(int score, String name)
+    {
+        JLabel scoreLabel = new JLabel();
+        String bestplayername = "";
+        int bestplayerscore = 0;
+        File file = new File("Score.txt");
+        try {
+            Scanner in = new Scanner(file);
+            bestplayername = in.hasNextLine() ? in.next() : null;
+            bestplayerscore = in.hasNextLine() ? Integer.parseInt(in.next()) : 0;
+        }
+        catch (IOException exception) {
+            exception.printStackTrace();
+        }
+        if(score >= bestplayerscore)
+        {
+            try {
+                PrintWriter write = new PrintWriter("Score.txt");
+                write.println(name);
+                write.println(score);
+                write.close();
+            }
+            catch (IOException exception) {
+                exception.printStackTrace();
+            }
+            scoreLabel = new JLabel("<html> Najlepszy Wynik! <br/>" + name + ":"+ score + "</html>");
+        }
+        else {
+            scoreLabel = new JLabel("<html> Najlepszy Wynik! <br/>" + bestplayername + ":"+ bestplayerscore + "</html>");
+        }
+        scoreLabel.setFont(new Font("Arial",0,25));
+        scoreLabel.setBounds(670,340, 400, 50);
         return scoreLabel;
     }
 
