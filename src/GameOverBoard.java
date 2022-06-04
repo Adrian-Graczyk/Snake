@@ -5,9 +5,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * Klasa obsługująca plansze po przegraniu/wygraniu gry
+ */
 public class GameOverBoard extends Board{
 
-
+    /**
+     * Metoda inicjalizuje pole w którym wyświetlana jest informacja
+     * jak zresetować grę
+     * @return pole typu JLabel w którym wyświetlany jest tekst
+     */
     public static JLabel getPressRLabel()
     {
         JLabel pressRLabel = new JLabel("Press \"R\" to start again");
@@ -16,6 +23,13 @@ public class GameOverBoard extends Board{
         return pressRLabel;
     }
 
+    /**
+     * Metoda inicjalizuje pole w którym będzie wyświetlony zwycięzca oraz wynik
+     * @param score uzyskany przez gracza wynik
+     * @param winner zwycięzca gry
+     * @param name nazwa gracza
+     * @return pole typu JLabel w którym wyświetlany jest tekst
+     */
     public static JLabel getFinalScoreLabel(int score, int winner, String name)
     {
         JLabel scoreLabel = new JLabel();
@@ -27,6 +41,15 @@ public class GameOverBoard extends Board{
         scoreLabel.setBounds(670,280, 400, 50);
         return scoreLabel;
     }
+
+    /**
+     * Metoda inicjalizuje pole w którym wyświetlany jest najlepszy gracz,
+     * odczytuje z pliku najlepszy uzyskany dotychczas wynik w grze,
+     * porównuje ze zdobytym i zapisuje do pliku jeśli uzysakny jest większy
+     * @param score wynik uzyskany przez gracza
+     * @param name nazwa garcza
+     * @return pole typu JLabel w którym wyświetlany jest tekst
+     */
     public static JLabel topScore(int score, String name)
     {
         JLabel scoreLabel = new JLabel();
@@ -63,6 +86,10 @@ public class GameOverBoard extends Board{
         return scoreLabel;
     }
 
+    /**
+     * Metoda wyświetlająca graficzne elementy planszy po zakończeniu gry
+     * @param g
+     */
     public static void draw(Graphics g) {
         g.drawImage(gameOverBackground.getImage(), 0, 0, MAX_X+50, MAX_Y+50, observer);
         g.drawImage(sadSnakeImage.getImage(), 200, 700, 200, 200, observer);

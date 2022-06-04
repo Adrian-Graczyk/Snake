@@ -8,14 +8,30 @@ import java.util.List;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
+/**
+ * Klasa mysz dziedzicząca po klasie Sprites
+ */
 public class Mouse extends Sprites{
-
+    /**
+     * Deklaracja zmiennej przechowującej współrzedną X
+     */
     private int x;
+    /**
+     * Deklaracja zmiennej przechowującej współrzedną Y
+     */
     private int y;
+    /**
+     * Deklaracja zmiennej przechowującej kierunek
+     */
     private Direction direction;
-
+    /**
+     * Deklaracja zmiennej przechowującej opóźnienie
+     */
     private int movementDelay;
 
+    /**
+     * Konstruktor klasy Mouse ustawiający kierunek poruszania oraz współrzędne startu myszy
+     */
     public Mouse(){
         x=40;
         y=40;
@@ -23,6 +39,10 @@ public class Mouse extends Sprites{
         movementDelay=0;
     }
 
+    /**
+     * Funkcja rysujaca mysz w róznych kierunkach
+     * @param g
+     */
     public void draw(Graphics g) {
         switch (direction) {
             case UP -> g.drawImage(mouseImageUP.getImage(), x * Board.SIZE, y * Board.SIZE, Board.SIZE, Board.SIZE, observer);
@@ -32,6 +52,12 @@ public class Mouse extends Sprites{
         }
     }
 
+    /**
+     * Metoda odpowiadająca za uciekanie myszy przed wężami oraz
+     * unikanie końca planszy
+     * @param snake obiekt Snake
+     * @param computersnake obiekt ComputerSnake
+     */
     public void choose_direction(Snake snake, ComputerSnake computersnake)
     {
         var shead = snake.getHead();
@@ -107,6 +133,12 @@ public class Mouse extends Sprites{
             }
         }
     }
+
+    /**
+     * Mertoda odpowiada za ruch myszy
+     * @param snake obiekt Snake
+     * @param computersnake obiekt ComputerSnake
+     */
     public void move(Snake snake, ComputerSnake computersnake) {
 
         choose_direction(snake, computersnake);
@@ -118,29 +150,46 @@ public class Mouse extends Sprites{
         }
     }
 
-
-
-
+    /**
+     * Metoda odpowiada za ustawienie współrzędnej X na wartość przekazaną w parametrze
+     * @param x wartość na którą usatwiamy współrzędną X
+     */
     public void setX(int x) {
         this.x = x;
     }
-
+    /**
+     * Metoda odpowiada za ustawienie współrzędnej Y na wartość przekazaną w parametrze
+     * @param y wartość na którą usatwiamy współrzędną Y
+     */
     public void setY(int y) {
         this.y = y;
     }
-
+    /**
+     * Metoda odpowiada za ustawienie kierunku poruszania się na wartość przekazaną w parametrze
+     * @param direction kierunek w którym ustawimay poruszanie się myszy
+     */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
+    /**
+     * Metoda odpowiada za pobranie wartości współrzędnej X w której znajduje się mysz
+     * @return współrzędna X myszy
+     */
     public int getX() {
         return x;
     }
-
+    /**
+     * Metoda odpowiada za pobranie wartości współrzędnej Y w której znajduje się mysz
+     * @return współrzędna Y myszy
+     */
     public int getY() {
         return y;
     }
-
+    /**
+     * Metoda odpowiada za pobranie kierunku w którym porusza się się mysz
+     * @return kierunek myszy
+     */
     public Direction getDirection() {
         return direction;
     }

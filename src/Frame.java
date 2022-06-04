@@ -3,10 +3,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Klasa incjalizuje pole w którym będzie wyświetlana gra i plansze początkowa i końcowa
+ */
 public class Frame extends JFrame implements ActionListener {
-
+    /**
+     * Pole statyczne w którym wyświetlany będzie wynik gracza
+     */
     public static JLabel scoreLabel;
+    /**
+     * Przycisk statyczny do zmiany gracza
+     */
     public static JButton changePlayerButton;
+
+    /**
+     * Konstruktor klasy Frame wyświetlający pola tekstowe, przyciski,
+     * inicjalizujący panel gry i obsługujący przycisk zamknięcia gry
+     */
     public Frame() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Snake");

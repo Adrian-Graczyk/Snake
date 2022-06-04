@@ -6,24 +6,70 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import static java.lang.Math.*;
 
+/**
+ * Klasa GamePanel dziedzicząca po JLabel, klasa odpowiada za wyświetlanie i sterowanie rozgrywką
+ */
 public class GamePanel extends JPanel implements ActionListener{
-
+    /**
+     * Inicjalizacja obiektu typu Snake
+     */
     private Snake snake = new Snake();
+    /**
+     * Inicjalizacja obiektu typu ComputerSnake
+     */
     private ComputerSnake computerSnake = new ComputerSnake();
+    /**
+     * Inicjalizacja obiektu typu Mouse
+     */
     private Mouse mouse = new Mouse();
+    /**
+     * Inicjalizacja obiektu typu Food
+     */
     private Food food = new Food();
+    /**
+     * Inicjalizacja obiektu typu Rocks
+     */
     private Rocks rocks = new Rocks();
+    /**
+     * Deklaracja pola tekstowego do którego gracz wpusze nazwe
+     */
     private JTextField userNameField;
+    /**
+     * Deklaracja przycisku rozpoczynającego grę
+     */
     private JButton startButton;
+    /**
+     * Zmienna bool ustawiająca wartość informującą o końcu gry gdy przegra gracz
+     */
     public boolean gameOver;
+    /**
+     * Zmienna bool ustawiająca wartość informującą o końcu gry gdy przegra komputer
+     */
     public boolean gameOverComputer;
+    /**
+     * Zmienna bool ustawiająca wartość informującą o wyświetlaniu planszy początkowej
+     */
     public boolean startBoardActive;
+    /**
+     * Deklaracja zmiennej przechowującej nazwę gracza
+     */
     public String name;
+    /**
+     * Inicjalizacja zmiennej przechowującej opóźnienie ruchu
+     */
     private final int DELAY = 100;
+    /**
+     * Inicjalizacja zmiennej przechowującej opóźnienie pojawiania się jabłek
+     */
     private final int FOOD_DELAY = 200;
+    /**
+     * Inicjalizacja zmiennej timer do obsługi ruchu w grze
+     */
     private Timer timer = new Timer();
 
-
+    /**
+     * Konstruktor klasy GamePanel odpowiadający za uruchomienie gry
+     */
     public GamePanel() {
         setPreferredSize(new Dimension(Board.MAX_X, Board.MAX_Y));
         setBounds(0,0,Board.MAX_X, Board.MAX_Y);
@@ -42,6 +88,10 @@ public class GamePanel extends JPanel implements ActionListener{
         timer.start();
     }
 
+    /**
+     * Metoda rysująca elementy planszy podczas gry oraz rysująca plansze początkową i końcową
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if (!gameOver && !startBoardActive && !gameOverComputer) {
@@ -71,6 +121,9 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
 
+    /**
+     * Metoda obsługująca resetowanie gry przypisane do klawisza
+     */
     public void ResetPanel() {
         removeAll();
         timer.stop();
@@ -84,6 +137,10 @@ public class GamePanel extends JPanel implements ActionListener{
         Frame.scoreLabel.setText("Your Score: 0");
     }
 
+    /**
+     * Metoda reagująca na wciśniecie przycisku startu gry
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==startButton) {
@@ -104,6 +161,9 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
 
+    /**
+     * Obsługa sterowania za pomocą klawiszy przez gracza
+     */
     private class GameKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
@@ -130,6 +190,11 @@ public class GamePanel extends JPanel implements ActionListener{
             }
         }
     }
+
+    /**
+     * Metoda sprawdza kolizje między wężami
+     * @return
+     */
     public boolean snakesCollisionCheck()
     {
         var cshead = computerSnake.getHead();
@@ -148,6 +213,11 @@ public class GamePanel extends JPanel implements ActionListener{
         }
         return false;
     }
+
+    /**
+     * Metoda timer uruchamia wątki odpowiadające za węże, jabłka oraz mysz,
+     * a także wywołuje sprawdzenie kolizji między wężami
+     */
     public class Timer extends javax.swing.Timer {
         public Timer() {
             super(DELAY, e -> {
@@ -181,6 +251,10 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
 
+    /**
+     * Metoda uruchamiająca wątek Snake'a, wywołująca ruch, sprawdzająca kolizje,
+     * reagująca na zjedzenie jabłka oraz myszy
+     */
     public class SnakeThread extends Thread {
         public void run() {
             snake.move();
@@ -189,9 +263,16 @@ public class GamePanel extends JPanel implements ActionListener{
             }
             if (mouse.getX() == snake.getHead().x && mouse.getY() == snake.getHead().y) {
                 var tail = snake.getTail();
-                snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
-                snake.setTail(new SnakePart((tail.x + 1), (tail.y + 1), tail.direction));
-                snake.setTail(new SnakePart((tail.x + 2), (tail.y + 2), tail.direction));
+                if(tail.direction == Direction.RIGHT || tail.direction == Direction.LEFT) {
+                    snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                    snake.setTail(new SnakePart((tail.x + 1), (tail.y), tail.direction));
+                    snake.setTail(new SnakePart((tail.x + 2), (tail.y), tail.direction));
+                }
+                else {
+                    snake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                    snake.setTail(new SnakePart((tail.x), (tail.y + 1), tail.direction));
+                    snake.setTail(new SnakePart((tail.x), (tail.y + 2), tail.direction));
+                }
                 mouse.setX((int) (Math.random() * 48 + 1));
                 mouse.setY((int) (Math.random() * 48 + 1));
                 Frame.scoreLabel.setText("Your Score: " + snake.getBody().size());
@@ -206,6 +287,10 @@ public class GamePanel extends JPanel implements ActionListener{
             }
         }
     }
+    /**
+     * Metoda uruchamiająca wątek ComputerSnake'a, sprawdzająca kolizje, wywołująca ruch,
+     * reagująca na zjedzenie jabłka oraz myszy, oraz wybór jabłka do którego wąż zostanie skierownay
+     */
     public class ComputerSnakeThread extends Thread {
         public void run() {
             computerSnake.computer_move();
@@ -222,9 +307,16 @@ public class GamePanel extends JPanel implements ActionListener{
             }
             if (mouse.getX() == computerSnake.getHead().x && mouse.getY() == computerSnake.getHead().y) {
                 var tail = computerSnake.getTail();
-                computerSnake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
-                computerSnake.setTail(new SnakePart((tail.x + 1), (tail.y + 1), tail.direction));
-                computerSnake.setTail(new SnakePart((tail.x + 2), (tail.y + 2), tail.direction));
+                if(tail.direction == Direction.RIGHT || tail.direction == Direction.LEFT) {
+                    computerSnake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                    computerSnake.setTail(new SnakePart((tail.x + 1), (tail.y), tail.direction));
+                    computerSnake.setTail(new SnakePart((tail.x + 2), (tail.y), tail.direction));
+                }
+                else {
+                    computerSnake.setTail(new SnakePart(tail.x, tail.y, tail.direction));
+                    computerSnake.setTail(new SnakePart((tail.x), (tail.y + 1), tail.direction));
+                    computerSnake.setTail(new SnakePart((tail.x), (tail.y + 2), tail.direction));
+                }
                 mouse.setX((int) (Math.random() * 48 + 1));
                 mouse.setY((int) (Math.random() * 48 + 1));
             }
@@ -237,7 +329,9 @@ public class GamePanel extends JPanel implements ActionListener{
             }
         }
     }
-
+    /**
+     * Metoda uruchamiająca wątek Jabłek oraz losująca punkty w których zostaną one wyświetlone na planszy
+     */
     public class ApplesThread extends Thread {
         public void run(){
             if(food.getIterationDelay()>10)
@@ -255,6 +349,9 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
 
+    /**
+     * Metoda uruchamiająca wątek myszy oraz wywołująca ruch myszy
+     */
     public class MouseThread extends Thread {
         public void run(){
             //if(mouse.getMovementDelay()>2)
